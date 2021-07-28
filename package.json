@@ -1,0 +1,22 @@
+{
+  "name": "proskomma-render-pdf",
+  "version": "0.5.0",
+  "description": "Scripture PDF generator based on proskomma-render",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Proskomma/proskomma-render-pdf.git"
+  },
+  "author": "Mark Howe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Proskomma/proskomma-render-pdf/issues"
+  },
+  "homepage": "https://github.com/Proskomma/proskomma-render-pdf#readme",
+  "dependencies": {
+    "proskomma-render": "^0.5.1"
+  }
+}
