@@ -8,43 +8,9 @@ class PeripheralDocument extends ScriptureParaDocument {
         this.head = [];
         this.bodyHead = [];
         this.body = [];
-        this.chapter = {
-            waiting: false,
-            c: null,
-            cp: null,
-            ca: null,
-            cc: 0
-        };
-        this.verses = {
-            waiting: false,
-            v: null,
-            vp: null,
-            va: null
-        };
         addActions(this);
     }
 
-    maybeRenderChapter() {
-        if (this.chapter.waiting) {
-            const chapterLabel = this.chapter.cp || this.chapter.c;
-            let chapterId = this.chapter.c;
-            if (this.chapter.cpc > 0) {
-                chapterId = `${chapterId}_${this.chapter.cpc}`;
-            }
-            this.context.document.chapters.push([chapterId, chapterLabel]);
-            this.body.push(`<h3 class="chapter">${chapterLabel}</h3>\n`);
-            this.body.push(`<p class="chapN">Chapter ${chapterLabel}</p>\n`);
-            this.chapter.waiting = false;
-        }
-    }
-
-    maybeRenderVerse() {
-        if (this.verses.waiting) {
-            const verseLabel = this.verses.vp || this.verses.v;
-            this.appendToTopStackRow(`<span class="verses">${verseLabel}</span>&#160;`);
-            this.verses.waiting = false;
-        }
-    }
 }
 
 const addActions = (dInstance) => {
@@ -68,18 +34,6 @@ const addActions = (dInstance) => {
                 periphTitle,
                 periphTitle,
             ];
-            dInstance.chapter = {
-                waiting: false,
-                c: null,
-                cp: null,
-                cc: 0
-            };
-            dInstance.verses = {
-                waiting: false,
-                v: null,
-                vp: null,
-                vc: 0
-            };
             dInstance.context.document.chapters = [];
         }
     );
@@ -143,54 +97,6 @@ const addActions = (dInstance) => {
             renderer.popStackRow();
         },
     );
-    // Chapter: maintain state variables, store for rendering by maybeRenderChapter()
-    dInstance.addAction(
-        'scope',
-        (context, data) => data.subType === 'start' && data.payload.startsWith("chapter/"),
-        (renderer, context, data) => {
-            dInstance.chapter.waiting = true;
-            const chapterLabel = data.payload.split("/")[1];
-            dInstance.chapter.c = chapterLabel;
-            dInstance.chapter.cp = null;
-            dInstance.chapter.cpc = 0;
-            dInstance.chapter.ca = null;
-            dInstance.chapter.cc++
-        },
-    );
-    // pubChapter: maintain state variables, store for rendering by maybeRenderChapter()
-    dInstance.addAction(
-        'scope',
-        (context, data) => data.subType === "start" && data.payload.startsWith("pubChapter/"),
-        (renderer, context, data) => {
-            dInstance.chapter.waiting = true;
-            const chapterLabel = data.payload.split("/")[1];
-            dInstance.chapter.cp = chapterLabel;
-            dInstance.chapter.cpc++;
-        }
-    );
-    // Verses: maintain state variables, store for rendering by maybeRenderVerse()
-    dInstance.addAction(
-        'scope',
-        (context, data) => data.subType === 'start' && data.payload.startsWith("verses/"),
-        (renderer, context, data) => {
-            dInstance.verses.waiting = true;
-            const verseLabel = data.payload.split("/")[1];
-            dInstance.verses.v = verseLabel;
-            dInstance.verses.vp = null;
-            dInstance.verses.vc++;
-        },
-    );
-    // pubVerse: maintain state variables, store for rendering by maybeRenderVerse()
-    dInstance.addAction(
-        'scope',
-        (context, data) => data.subType === 'start' && data.payload.startsWith("pubVerse/"),
-        (renderer, context, data) => {
-            dInstance.verses.waiting = true;
-            const verseLabel = data.payload.split("/")[1];
-            dInstance.verses.vp = verseLabel;
-            dInstance.verses.vc++;
-        }
-    );
     // Character markup - open or close an element
     dInstance.addAction(...sharedActions.characterScope);
     // Unhandled scope
@@ -205,10 +111,6 @@ const addActions = (dInstance) => {
             if (["lineSpace", "eol"].includes(data.subType)) {
                 tokenString = " ";
             } else {
-                if (context.sequenceStack[0].type === "main") {
-                    dInstance.maybeRenderChapter();
-                    dInstance.maybeRenderVerse();
-                }
                 if ([";", "!", "?"].includes(data.payload)) {
                     if (renderer.topStackRow().length > 0) {
                         let lastPushed = renderer.topStackRow().pop();
