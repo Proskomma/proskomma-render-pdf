@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/Proskomma/proskomma-render-pdf#readme",
   "dependencies": {
-    "proskomma-render": "^0.5.1"
+    "proskomma-render": "^0.5.2"
   }
 }
