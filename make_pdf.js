@@ -1,5 +1,3 @@
-// node make_pdf.js config_ult.json out.pdf
-
 const fse = require('fs-extra');
 const path = require('path');
 
@@ -47,13 +45,17 @@ const doRender = async (pk, config) => {
         .then(thenFunction)
 };
 
+if (process.argv.length !== 4) {
+    throw new Error("USAGE: node make_pdf.js <configPath> <htmlOutputPath>");
+}
+
 const configPath = path.resolve(__dirname, process.argv[2]);
 const config = fse.readJsonSync(configPath);
 config.codeRoot = __dirname;
 config.configRoot = path.dirname(configPath);
 config.outputPath = process.argv[3];
 if (!config.outputPath) {
-    throw new Error("USAGE: node make_pdf.js config_nfc18.json out.epub");
+    throw new Error("USAGE: node make_pdf.js <configPath> <htmlOutputPath>");
 }
 config.bookOutput = {};
 

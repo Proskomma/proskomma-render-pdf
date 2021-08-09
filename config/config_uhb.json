@@ -1,0 +1,63 @@
+{
+  "sourceDir": "../../../sag_usfm/hbo/uhb",
+  "title": "Unfolding Word Hebrew",
+  "language": "he",
+  "textDirection": "rtl",
+  "uid": "UHB",
+  "bookSources": [
+    "GEN",
+    "EXO",
+    "LEV",
+    "NUM",
+    "DEU"
+  ],
+  "peripheralSources": [
+  ],
+  "structure": [
+    [
+      "section",
+      "ot",
+      [
+        [
+          "section",
+          "pentateuch",
+          [
+            [
+              "bookCode",
+              "GEN"
+            ],
+            [
+              "bookCode",
+              "EXO"
+            ],
+            [
+              "bookCode",
+              "LEV"
+            ],
+            [
+              "bookCode",
+              "NUM"
+            ],
+            [
+              "bookCode",
+              "DEU"
+            ]
+          ]
+        ]
+      ]
+    ]
+  ],
+  "i18n": {
+    "notes": "Notes de pied de page",
+    "tocBooks": "Table des matières",
+    "titlePage": "UHB",
+    "copyright": "© unfoldingWord",
+    "coverAlt": "Couverture",
+    "glossary": "Vocabulaire",
+    "ot": "Ancien Testament",
+    "pentateuch": "Pentateuque",
+    "history": "Livres historiques",
+    "poetry": "Livres poétiques et sapientiaux",
+    "prophesy": "Livres prophétiques"
+  }
+}

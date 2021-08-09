@@ -76,6 +76,8 @@ const addActions = (dsInstance) => {
             }
             let startHTML = fse.readFileSync(path.resolve(renderer.config.codeRoot, 'resources/startHTML.html'), 'utf8');
             startHTML = startHTML.replace(/%titlePage%/g, renderer.config.i18n.titlePage);
+            const textDirection = renderer.config.textDirection || 'ltr';
+            startHTML = startHTML.replace(/%textDirection%/g, textDirection);
             renderer.frontOutput.push(startHTML);
             let title = fse.readFileSync(path.resolve(renderer.config.codeRoot, 'resources/title.xhtml'), 'utf8');
             title = title.replace(/%titlePage%/g, renderer.config.i18n.titlePage);
