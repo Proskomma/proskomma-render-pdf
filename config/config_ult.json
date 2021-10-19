@@ -2,6 +2,7 @@
   "sourceDir": "../test/test_data/ult/usfm",
   "title": "unfoldingWord Literal Translation",
   "language": "en",
+  "textDirection": "ltr",
   "uid": "ULT",
   "bookSources": [
     "PSA",

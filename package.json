@@ -18,6 +18,6 @@
   "homepage": "https://github.com/Proskomma/proskomma-render-pdf#readme",
   "dependencies": {
     "fs-extra": "^10.0.0",
-    "proskomma-render": "^0.5.2"
+    "proskomma-render": "^0.5.4"
   }
 }

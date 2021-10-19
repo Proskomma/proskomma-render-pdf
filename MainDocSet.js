@@ -78,6 +78,8 @@ const addActions = (dsInstance) => {
             startHTML = startHTML.replace(/%titlePage%/g, renderer.config.i18n.titlePage);
             const textDirection = renderer.config.textDirection || 'ltr';
             startHTML = startHTML.replace(/%textDirection%/g, textDirection);
+            startHTML = startHTML.replace(/%left%/g, textDirection === 'ltr' ? 'left' : 'right');
+            startHTML = startHTML.replace(/%right%/g, textDirection === 'ltr' ? 'right' : 'left');
             renderer.frontOutput.push(startHTML);
             let title = fse.readFileSync(path.resolve(renderer.config.codeRoot, 'resources/title.xhtml'), 'utf8');
             title = title.replace(/%titlePage%/g, renderer.config.i18n.titlePage);

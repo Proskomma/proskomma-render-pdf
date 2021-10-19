@@ -99,7 +99,8 @@ const addActions = (dInstance) => {
         (renderer, context, data) => {
             const htmlClass = data.bs.payload.split('/')[1];
             const tag = ["mt", "ms"].includes(htmlClass) ? "h1" : "h2";
-            renderer.bodyHead.push(`<${tag} class="${htmlClass}">${renderer.topStackRow().join("").trim()}</${tag}>\n`);
+            const idAtt = htmlClass === 'mt' ? ` id="title_${context.document.headers.bookCode}"` : '';
+            renderer.bodyHead.push(`<${tag} class="${htmlClass}"${idAtt}>${renderer.topStackRow().join("").trim()}</${tag}>\n`);
             renderer.popStackRow();
         },
     );
@@ -246,7 +247,6 @@ const addActions = (dInstance) => {
             renderer.config.bookOutput[context.document.headers.bookCode] =
                 [
                     '<div class="bibleBook">\n',
-                    `<a id="title_${context.document.headers.bookCode}"/>\n`,
                     `<p class="runningHeader">${context.document.headers.toc}</p>\n`,
                     `<header>\n${bodyHead}\n</header>\n`,
                     '<div class="bibleBookBody">\n',
