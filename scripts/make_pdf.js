@@ -2,13 +2,14 @@ import fse from 'fs-extra';
 import path from 'path';
 import appRootPath from "app-root-path";
 const appRoot = appRootPath.toString();
+import {doRender} from '../index.js';
 
 import {Proskomma} from 'proskomma';
 import {
     ScriptureParaModel,
     ScriptureParaModelQuery
 } from 'proskomma-render';
-import MainDocSet from './MainDocSet.js';
+import MainDocSet from '../MainDocSet.js';
 
 const bookMatches = str => {
     for (const book of config.bookSources) {
@@ -27,25 +28,6 @@ const peripheralMatches = str => {
     }
     return false;
 }
-
-const doMainRender = (config, result) => {
-    ts = Date.now();
-    const model = new ScriptureParaModel(result, config);
-    model.addDocSetModel('default', new MainDocSet(result, model.context, config));
-    model.render();
-    console.log(`Main rendered in  ${(Date.now() - ts) / 1000} sec`);
-    console.log(model.logString());
-}
-
-const doRender = async (pk, config) => {
-    const thenFunction = result => {
-        console.log(`Query processed in  ${(Date.now() - ts) / 1000} sec`);
-        doMainRender(config, result);
-        fse.writeFileSync(config.outputPath, config.output);
-    }
-    await ScriptureParaModelQuery(pk)
-        .then(thenFunction)
-};
 
 if (process.argv.length !== 4) {
     throw new Error("USAGE: node make_pdf.js <configPath> <htmlOutputPath>");
@@ -93,6 +75,5 @@ for (const filePath of fse.readdirSync(fqSourceDir)) {
 console.log(`${nBooks} book(s) and ${nPeriphs} peripheral(s) loaded in ${(Date.now() - ts) / 1000} sec`);
 ts = Date.now();
 
-doRender(pk, config).then((res) => {
-    // console.log(JSON.stringify(config, null, 2));
-});
+const config2 = await doRender(pk, config);
+fse.writeFileSync(config2.outputPath, config2.output);
