@@ -1,8 +1,8 @@
-const sharedActions = {
+export default {
     // Character markup - open or close an element
     characterScope: [
         'scope',
-        (context, data) => data.payload.startsWith("span") && ["bd", "bk", "dc", "em", "ft", "fq", "fqa", "fr", "fv", "it", "k", "ord", "pn", "qs", "sls", "tl", "wj", "xt"].includes(data.payload.split("/")[1]),
+        (context, data) => data.payload.startsWith("span") && ["bd", "bk", "dc", "em", "fk", "ft", "fq", "fqa", "fr", "fv", "it", "k", "nd", "ord", "pn", "qs", "sls", "tl", "wj", "xt"].includes(data.payload.split("/")[1]),
         (renderer, context, data) => {
             if (data.subType === "start") {
                 renderer.pushStackRow();
@@ -17,7 +17,7 @@ const sharedActions = {
     w: [
         'scope',
         (context, data) => data.payload.split("/")[1] === 'w',
-        (renderer, context, data) => {}
+        () => {}
     ],
     startBlock: [
         'startBlock',
@@ -67,5 +67,3 @@ const sharedActions = {
         }
     ],
 };
-
-module.exports = sharedActions;

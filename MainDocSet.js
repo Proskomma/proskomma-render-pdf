@@ -1,17 +1,13 @@
-const fse = require('fs-extra');
-const path = require('path');
+import { ScriptureDocSet } from 'proskomma-render';
+import MainDocument from './CanonicalDocument.js';
+import PeripheralDocument from './PeripheralDocument.js';
+import {startHTMLTemplate, endHTMLTemplate, tocHTMLTemplate, titleHTMLTemplate} from './htmlResources.js';
 
-const { ScriptureDocSet } = require('proskomma-render');
-
-const MainDocument = require('./CanonicalDocument');
-const PeripheralDocument = require('./PeripheralDocument');
-
-class MainDocSet extends ScriptureDocSet {
+export default class MainDocSet extends ScriptureDocSet {
 
     constructor(result, context, config) {
         super(result, context, config);
         this.frontOutput = [];
-        this.bodyOutput = [];
         this.backOutput = [];
         this.bookTitles = {};
         this.output = '';
@@ -19,7 +15,6 @@ class MainDocSet extends ScriptureDocSet {
     }
 
     modelForDocument(document) {
-        const bookCode = document.headers.filter(h => h.key === 'bookCode')[0];
         if (document.idParts.type === 'periph') {
             return 'peripheral';
         } else {
@@ -74,30 +69,26 @@ const addActions = (dsInstance) => {
                 }
                 return ret.join('\n');
             }
-            let startHTML = fse.readFileSync(path.resolve(renderer.config.codeRoot, 'resources/startHTML.html'), 'utf8');
+            let startHTML = startHTMLTemplate;
             startHTML = startHTML.replace(/%titlePage%/g, renderer.config.i18n.titlePage);
             const textDirection = renderer.config.textDirection || 'ltr';
             startHTML = startHTML.replace(/%textDirection%/g, textDirection);
             startHTML = startHTML.replace(/%left%/g, textDirection === 'ltr' ? 'left' : 'right');
             startHTML = startHTML.replace(/%right%/g, textDirection === 'ltr' ? 'right' : 'left');
             renderer.frontOutput.push(startHTML);
-            let title = fse.readFileSync(path.resolve(renderer.config.codeRoot, 'resources/title.xhtml'), 'utf8');
+            let title = titleHTMLTemplate;
             title = title.replace(/%titlePage%/g, renderer.config.i18n.titlePage);
             title = title.replace(/%copyright%/g, renderer.config.i18n.copyright);
             renderer.frontOutput.push(title);
-            let toc = fse.readFileSync(path.resolve(renderer.config.codeRoot, 'resources/toc.xhtml'), 'utf8');
+            let toc = tocHTMLTemplate;
             toc = toc.replace(/%contentLinks%/g, nestedToc(renderer.config.structure));
             toc = toc.replace(/%toc_books%/g, renderer.config.i18n.tocBooks);
             renderer.frontOutput.push(toc);
             let bodyOutput = renderer.usedDocuments.map(b => renderer.config.bookOutput[b]).join('');
-            let endHTML = fse.readFileSync(path.resolve(renderer.config.codeRoot, 'resources/endHTML.html'), 'utf8');
+            let endHTML = endHTMLTemplate;
             renderer.backOutput.push(endHTML);
-            fse.writeFileSync(
-                renderer.config.outputPath,
-                `${renderer.frontOutput.join('\n')}\n${bodyOutput}\n${renderer.backOutput.join('\n')}`
-            );
+            const output = renderer.frontOutput.join('\n') + '\n' + bodyOutput + renderer.backOutput.join('\n');
+            renderer.config.output = output;
         }
     );
 }
-
-module.exports = MainDocSet;

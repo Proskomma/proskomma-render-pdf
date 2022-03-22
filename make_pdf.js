@@ -1,12 +1,14 @@
-const fse = require('fs-extra');
-const path = require('path');
+import fse from 'fs-extra';
+import path from 'path';
+import appRootPath from "app-root-path";
+const appRoot = appRootPath.toString();
 
-const {Proskomma} = require('proskomma');
-const {
+import {Proskomma} from 'proskomma';
+import {
     ScriptureParaModel,
     ScriptureParaModelQuery
-} = require('proskomma-render');
-const MainDocSet = require('./MainDocSet');
+} from 'proskomma-render';
+import MainDocSet from './MainDocSet.js';
 
 const bookMatches = str => {
     for (const book of config.bookSources) {
@@ -39,7 +41,7 @@ const doRender = async (pk, config) => {
     const thenFunction = result => {
         console.log(`Query processed in  ${(Date.now() - ts) / 1000} sec`);
         doMainRender(config, result);
-        return config;
+        fse.writeFileSync(config.outputPath, config.output);
     }
     await ScriptureParaModelQuery(pk)
         .then(thenFunction)
@@ -49,11 +51,11 @@ if (process.argv.length !== 4) {
     throw new Error("USAGE: node make_pdf.js <configPath> <htmlOutputPath>");
 }
 
-const configPath = path.resolve(__dirname, process.argv[2]);
+const configPath = path.resolve(appRoot, process.argv[2]);
 const config = fse.readJsonSync(configPath);
-config.codeRoot = __dirname;
+config.codeRoot = appRoot;
 config.configRoot = path.dirname(configPath);
-config.outputPath = process.argv[3];
+config.outputPath = path.resolve(process.argv[3]);
 if (!config.outputPath) {
     throw new Error("USAGE: node make_pdf.js <configPath> <htmlOutputPath>");
 }

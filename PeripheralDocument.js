@@ -1,7 +1,7 @@
-const { ScriptureParaDocument } = require('proskomma-render');
-const sharedActions = require('./shared_actions');
+import { ScriptureParaDocument } from 'proskomma-render';
+import sharedActions from './shared_actions.js';
 
-class PeripheralDocument extends ScriptureParaDocument {
+export default class PeripheralDocument extends ScriptureParaDocument {
 
     constructor(result, context, config) {
         super(result, context, config);
@@ -21,7 +21,7 @@ const addActions = (dInstance) => {
         (renderer, context) => {
             let cssPath = "../../CSS/styles.css";
             dInstance.head = [
-                '<meta charset=\"utf-8\"/>\n',
+                '<meta charset="utf-8"/>\n',
                 `<link type="text/css" rel="stylesheet" href="${cssPath}" />\n`,
                 `<title>${context.document.headers.h}</title>`,
             ];
@@ -160,5 +160,3 @@ const addActions = (dInstance) => {
         }
     );
 };
-
-module.exports = PeripheralDocument;
