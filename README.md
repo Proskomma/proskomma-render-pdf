@@ -13,11 +13,15 @@ You will need Node and NPM.
 ```
 cd proskomma-render-pdf
 npm install
-npm test # Currently not in Windows
 ```
-## To make PagedJS-aware HTML from which to 'save' a PDF file
+
+## Usage
+`doRender` takes as arguments an instance of Proskomma, containing content, and a config object. See the `make_pdf.js` script for details.
+
+## Script to make PagedJS-aware HTML from which to 'save' a PDF file
 
 ```
+cd scripts
 node ./make_pdf.js config/config_ult.json ~/Desktop/ult_demo.html
 # Open this HTML file with a browser
 # Wait for it to paginate the content
