@@ -1,7 +1,7 @@
 {
   "name": "proskomma-render-pdf",
   "type": "module",
-  "version": "0.6.7",
+  "version": "0.6.8",
   "description": "Scripture PDF generator based on proskomma-render",
   "main": "index.js",
   "scripts": {

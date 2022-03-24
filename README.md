@@ -11,7 +11,7 @@ npm install
 ```
 
 ## Usage
-`import {doRender} from 'proskomma-render-pdf';`
+`import {doRender, configIssues} from 'proskomma-render-pdf';`
 
 `doRender` takes as arguments
 - an instance of Proskomma which has been preloaded with (at least) the necessary documents
@@ -20,6 +20,12 @@ npm install
 - optionally, an array of documentIds to render
 
 See the scripts for detailed usage.
+
+`configIssues(configOb)` returns an array of issues found with the config file, including
+- badly-formed book names (should be Paratext-style 3-letter, upper case codes)
+- section ids with no corresponding entry in the i18n section
+
+This function is run within `doRender`, but you may wish to check your config before attempting to render.
 
 ## Example Usage
 ### Scripts
