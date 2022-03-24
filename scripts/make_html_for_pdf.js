@@ -34,7 +34,7 @@ config.codeRoot = appRoot;
 config.configRoot = path.dirname(configPath);
 config.outputPath = path.resolve(process.argv[3]);
 if (!config.outputPath) {
-    throw new Error("USAGE: node make_pdf.js <configPath> <htmlOutputPath>");
+    throw new Error("USAGE: node make_html_for_pdf.js <configPath> <htmlOutputPath>");
 }
 config.bookOutput = {};
 
@@ -72,4 +72,4 @@ ts = Date.now();
 
 const config2 = await doRender(pk, config);
 fse.writeFileSync(config2.outputPath, config2.output);
-console.log("PDF written to: "+config2.outputPath+" (file://"+encodeURI(config2.outputPath)+"). View in browser to see rendered HTML with PagedJS.")
+console.log(`HTML written to: ${path.resolve(config2.outputPath)}. View in a browser to see how PagedJS renders this.`)

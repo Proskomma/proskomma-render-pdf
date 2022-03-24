@@ -82,7 +82,7 @@ try {
           const toc_links = document.querySelectorAll('#toc_ul a');
           if (toc_links.length > 0) {
               // Check if the last TOC link has its counter #
-              if(window.getComputedStyle(toc_links[toc_links.length-1], ':after').counterReset != 'none') {
+              if(window.getComputedStyle(toc_links[toc_links.length-1], ':after').counterReset !== 'none') {
                   return true;
               } else {
                   return false;
@@ -101,6 +101,6 @@ try {
     exit(1);
 }
 
-await page.pdf({path: config2.outputPath, format: 'A4'})
-await browser.close()
-console.log("PDF written to: "+config2.outputPath)
+await page.pdf({path: config2.outputPath, format: 'A4'});
+await browser.close();
+console.log(`PDF written to: ${config2.outputPath}`);
