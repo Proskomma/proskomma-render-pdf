@@ -141,6 +141,12 @@ const startHTMLTemplate = `<!DOCTYPE html>
             columns: 1;
             widows: 2;
         }
+        
+        .main_sequence {}
+        .introduction_sequence {
+            columns: 1;
+            font-family: sans-serif;
+        }
 
         .toc_periph {font-style: italic}
         .toc_level1, .toc_level2, .toc_level3 {margin-top: 5px}

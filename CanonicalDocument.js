@@ -139,7 +139,7 @@ const addActions = (dInstance) => {
         context => ["main", "introduction"].includes(context.sequenceStack[0].type),
         (renderer, context, data) => {
             const htmlClass = data.bs.payload.split("/")[1];
-            renderer.body.push(`<div class="${htmlClass}">${renderer.topStackRow().join("").trim()}</div>\n`);
+            renderer.body.push(`<div class="${htmlClass} ${context.sequenceStack[0].type}_sequence">${renderer.topStackRow().join("").trim()}</div>\n`);
             renderer.popStackRow();
         },
     );
