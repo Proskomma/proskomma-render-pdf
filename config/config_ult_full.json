@@ -1,0 +1,428 @@
+{
+  "sourceDir": "../../en_ult",
+  "title": "unfoldingWord Literal Translation",
+  "language": "en",
+  "textDirection": "ltr",
+  "uid": "ULT",
+  "bookSources": [
+    "GEN",
+    "EXO",
+    "LEV",
+    "NUM",
+    "DEU",
+    "JOS",
+    "JDG",
+    "RUT",
+    "1SA",
+    "2SA",
+    "1KI",
+    "2KI",
+    "1CH",
+    "2CH",
+    "EZR",
+    "NEH",
+    "EST",
+    "JOB",
+    "PSA",
+    "PRO",
+    "ECC",
+    "SNG",
+    "ISA",
+    "JER",
+    "LAM",
+    "EZK",
+    "DAN",
+    "HOS",
+    "JOL",
+    "AMO",
+    "OBA",
+    "JON",
+    "MIC",
+    "NAM",
+    "HAB",
+    "ZEP",
+    "HAG",
+    "ZEC",
+    "MAL",
+    "MAT",
+    "MRK",
+    "LUK",
+    "JHN",
+    "ACT",
+    "ROM",
+    "1CO",
+    "2CO",
+    "GAL",
+    "EPH",
+    "PHP",
+    "COL",
+    "1TH",
+    "2TH",
+    "1TI",
+    "2TI",
+    "TIT",
+    "PHM",
+    "HEB",
+    "JAS",
+    "1PE",
+    "2PE",
+    "1JN",
+    "2JN",
+    "3JN",
+    "JUD",
+    "REV"
+  ],
+  "peripheralSources": [],
+  "structure": [
+    [
+      "section",
+      "ot",
+      [
+        [
+          "bookCode",
+          "GEN"
+        ],
+
+        [
+          "bookCode",
+          "EXO"
+        ],
+
+        [
+          "bookCode",
+          "LEV"
+        ],
+
+        [
+          "bookCode",
+          "NUM"
+        ],
+
+        [
+          "bookCode",
+          "DEU"
+        ],
+
+        [
+          "bookCode",
+          "JOS"
+        ],
+
+        [
+          "bookCode",
+          "JDG"
+        ],
+
+        [
+          "bookCode",
+          "RUT"
+        ],
+
+        [
+          "bookCode",
+          "1SA"
+        ],
+
+        [
+          "bookCode",
+          "2SA"
+        ],
+
+        [
+          "bookCode",
+          "1KI"
+        ],
+
+        [
+          "bookCode",
+          "2KI"
+        ],
+
+        [
+          "bookCode",
+          "1CH"
+        ],
+
+        [
+          "bookCode",
+          "2CH"
+        ],
+
+        [
+          "bookCode",
+          "EZR"
+        ],
+
+        [
+          "bookCode",
+          "NEH"
+        ],
+
+        [
+          "bookCode",
+          "EST"
+        ],
+
+        [
+          "bookCode",
+          "JOB"
+        ],
+
+        [
+          "bookCode",
+          "PSA"
+        ],
+
+        [
+          "bookCode",
+          "PRO"
+        ],
+
+        [
+          "bookCode",
+          "ECC"
+        ],
+
+        [
+          "bookCode",
+          "SNG"
+        ],
+
+        [
+          "bookCode",
+          "ISA"
+        ],
+
+        [
+          "bookCode",
+          "JER"
+        ],
+
+        [
+          "bookCode",
+          "LAM"
+        ],
+
+        [
+          "bookCode",
+          "EZK"
+        ],
+
+        [
+          "bookCode",
+          "DAN"
+        ],
+
+        [
+          "bookCode",
+          "HOS"
+        ],
+
+        [
+          "bookCode",
+          "JOL"
+        ],
+
+        [
+          "bookCode",
+          "AMO"
+        ],
+
+        [
+          "bookCode",
+          "OBA"
+        ],
+
+        [
+          "bookCode",
+          "JON"
+        ],
+
+        [
+          "bookCode",
+          "MIC"
+        ],
+
+        [
+          "bookCode",
+          "NAM"
+        ],
+
+        [
+          "bookCode",
+          "HAB"
+        ],
+
+        [
+          "bookCode",
+          "ZEP"
+        ],
+
+        [
+          "bookCode",
+          "HAG"
+        ],
+
+        [
+          "bookCode",
+          "ZEC"
+        ],
+
+        [
+          "bookCode",
+          "MAL"
+        ]
+    ]
+    ],
+    [
+      "section",
+      "nt",
+      [
+        [
+          "bookCode",
+          "MAT"
+        ],
+
+        [
+          "bookCode",
+          "MRK"
+        ],
+
+        [
+          "bookCode",
+          "LUK"
+        ],
+
+        [
+          "bookCode",
+          "JHN"
+        ],
+
+        [
+          "bookCode",
+          "ACT"
+        ],
+
+        [
+          "bookCode",
+          "ROM"
+        ],
+
+        [
+          "bookCode",
+          "1CO"
+        ],
+
+        [
+          "bookCode",
+          "2CO"
+        ],
+
+        [
+          "bookCode",
+          "GAL"
+        ],
+
+        [
+          "bookCode",
+          "EPH"
+        ],
+
+        [
+          "bookCode",
+          "PHP"
+        ],
+
+        [
+          "bookCode",
+          "COL"
+        ],
+
+        [
+          "bookCode",
+          "1TH"
+        ],
+
+        [
+          "bookCode",
+          "2TH"
+        ],
+
+        [
+          "bookCode",
+          "1TI"
+        ],
+
+        [
+          "bookCode",
+          "2TI"
+        ],
+
+        [
+          "bookCode",
+          "TIT"
+        ],
+
+        [
+          "bookCode",
+          "PHM"
+        ],
+
+        [
+          "bookCode",
+          "HEB"
+        ],
+
+        [
+          "bookCode",
+          "JAS"
+        ],
+
+        [
+          "bookCode",
+          "1PE"
+        ],
+
+        [
+          "bookCode",
+          "2PE"
+        ],
+
+        [
+          "bookCode",
+          "1JN"
+        ],
+
+        [
+          "bookCode",
+          "2JN"
+        ],
+
+        [
+          "bookCode",
+          "3JN"
+        ],
+
+        [
+          "bookCode",
+          "JUD"
+        ],
+
+        [
+          "bookCode",
+          "REV"
+        ]
+      ]
+    ]
+  ],
+  "i18n": {
+    "notes": "Notes",
+    "tocBooks": "Books of the Bible",
+    "titlePage": "unfoldingWord Literal Translation: Psalms and Gospels",
+    "copyright": "Licensed under a Creative Commons Attribution-Sharealike 4.0 International License",
+    "coverAlt": "Cover",
+    "preface": "Preface",
+    "ot": "Old Testament",
+    "nt": "New Testament"
+  }
+}
