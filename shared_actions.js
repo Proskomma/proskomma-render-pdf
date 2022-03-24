@@ -2,7 +2,7 @@ export default {
     // Character markup - open or close an element
     characterScope: [
         'scope',
-        (context, data) => data.payload.startsWith("span") && ["bd", "bk", "dc", "em", "fk", "ft", "fq", "fqa", "fr", "fv", "it", "k", "nd", "ord", "pn", "qs", "sls", "tl", "wj", "xt"].includes(data.payload.split("/")[1]),
+        (context, data) => data.payload.startsWith("span") && ["bd", "bk", "dc", "em", "fk", "ft", "fq", "fqa", "fr", "fv", "ior", "it", "k", "nd", "ord", "pn", "qs", "sls", "tl", "wj", "xt"].includes(data.payload.split("/")[1]),
         (renderer, context, data) => {
             if (data.subType === "start") {
                 renderer.pushStackRow();

@@ -64,6 +64,9 @@ const addActions = (dsInstance) => {
                     } else if (record[1] === 'GLO') {
                         ret.push(`<li class="leader"><a href="#title_${record[1]}">${renderer.config.i18n.glossary}</a></li>\n`);
                     } else {
+                        if (!(record[1] in renderer.bookTitles)) {
+                            throw new Error(`Book title for ${record[1]} not found - was the document loaded?`);
+                        }
                         ret.push(`<li class="leader"><a href="#title_${record[1]}">${renderer.bookTitles[record[1]][2]}</a></li>`);
                     }
                 }

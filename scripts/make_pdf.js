@@ -90,7 +90,7 @@ page.on('console', msg => {
 
 try {
     console.log("Waiting for Paged.JS to render the TOC...");
-    await page.waitForFunction(() => {if(lastCheckPageNum!=pjCurrentPageNum)console.log("Current Page: "+pjCurrentPageNum);lastCheckPageNum=pjCurrentPageNum;return pjRenderingDone;},
+    await page.waitForFunction(() => {console.log("Current Page: "+pjCurrentPageNum);return pjRenderingDone;},
         {timeout: 120000, polling: "mutation"} // Set timeout here. This is 2 minutes. TODO: Add to config file?
     );
 } catch(e) {
