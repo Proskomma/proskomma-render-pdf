@@ -33,8 +33,10 @@ const configPath = path.resolve(appRoot, process.argv[2]);
 const config = fse.readJsonSync(configPath);
 config.codeRoot = appRoot;
 config.configRoot = path.dirname(configPath);
-config.outputPath = path.resolve(process.argv[3]);
-if (!config.outputPath) {
+
+
+const pdfOutputPath = path.resolve(process.argv[3]);
+if (!pdfOutputPath) {
     throw new Error("USAGE: node make_pdf.js <configPath> <pdfOutputPath>");
 }
 config.bookOutput = {};
@@ -72,25 +74,24 @@ console.log(`${nBooks} book(s) and ${nPeriphs} peripheral(s) loaded in ${(Date.n
 ts = Date.now();
 
 const config2 = await doRender(pk, config);
+const prePagedJSHtml = config2.output;
 
-const browser = await puppeteer.launch()
-const page = await browser.newPage()
-await page.setContent(config2.output)
+const prePagedJSHtmlOutputPath = pdfOutputPath.replace(/\.pdf$/, "")+"_pre_pagedjs.html";
+fse.writeFileSync(prePagedJSHtmlOutputPath, prePagedJSHtml);
+console.log("Pre-PagedJS HTML written to: "+prePagedJSHtmlOutputPath+" (file://"+encodeURI(prePagedJSHtmlOutputPath)+"). View in browser to see rendered HTML with PagedJS.");
+
+const browser = await puppeteer.launch();
+const page = await browser.newPage();
+await page.setContent(prePagedJSHtml);
+page.on('console', msg => {
+    for (let i = 0; i < msg.args().length; ++i)
+      console.log(`${i}: ${msg.args()[i]}`);
+  });
+
 try {
     console.log("Waiting for Paged.JS to render the TOC...");
-    await page.waitForFunction(() => {
-          const toc_links = document.querySelectorAll('#toc_ul a');
-          if (toc_links.length > 0) {
-              // Check if the last TOC link has its counter #
-              if(window.getComputedStyle(toc_links[toc_links.length-1], ':after').counterReset != 'none') {
-                  return true;
-              } else {
-                  return false;
-              }
-          }
-          return true; // No TOC?
-        },
-        {timeout: 120000} // Set timeout here. This is 2 minutes. TODO: Add to config file?
+    await page.waitForFunction(() => {if(lastCheckPageNum!=pjCurrentPageNum)console.log("Current Page: "+pjCurrentPageNum);lastCheckPageNum=pjCurrentPageNum;return pjRenderingDone;},
+        {timeout: 120000, polling: "mutation"} // Set timeout here. This is 2 minutes. TODO: Add to config file?
     );
 } catch(e) {
     if (e instanceof puppeteer.errors.TimeoutError) {
@@ -101,6 +102,13 @@ try {
     exit(1);
 }
 
-await page.pdf({path: config2.outputPath, format: 'A4'})
-await browser.close()
-console.log("PDF written to: "+config2.outputPath)
+let staticHtml = await page.content();
+
+const staticHtmlOutputPath = pdfOutputPath.replace(/\.pdf$/, "")+"_static.html";
+fse.writeFileSync(staticHtmlOutputPath, staticHtml);
+console.log("Static HTML written to: "+staticHtmlOutputPath+" (file://"+encodeURI(staticHtmlOutputPath)+")");
+
+await page.pdf({path: pdfOutputPath, format: 'A4'})
+console.log("PDF written to: "+pdfOutputPath)
+
+await browser.close();

@@ -4,6 +4,25 @@ const startHTMLTemplate = `<!DOCTYPE html>
     <meta charset="UTF-8"/>
     <title>%titlePage%</title>
     <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
+    <script>
+        var pjRenderingDone = false;
+        var pjCurrentPage = null;
+        var pjCurrentPageNum = 0;
+        var pjPages = null;
+        var lastCheckPageNum = 0; // For puppeteer to record what it last checked
+        class MyPageHandler extends Paged.Handler {
+            afterPageLayout(pageElement, page, breakToken){
+                pjCurrentPage = page;
+                pjCurrentPageNum = page.position + 1;
+            }
+
+            afterRendered(pages) {
+                pjRenderingDone = true;
+                pjPages = pages;
+            }
+        }
+        Paged.registerHandlers(MyPageHandler);
+    </script>
     <style>
         @page {
             size: 210mm 297mm;
