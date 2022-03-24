@@ -119,6 +119,10 @@ const startHTMLTemplate = `<!DOCTYPE html>
             page-break-after: recto;
             text-align: center;
         }
+        
+        hr {
+            page-break-after: recto;
+        }
 
         div.toc {page-break-after: recto}
         div.bibleBook {
@@ -161,6 +165,7 @@ const startHTMLTemplate = `<!DOCTYPE html>
         .ili {padding-left: 1.5em; font-size: 10pt;}
         .io, .io2 {font-size: 10pt; font-family: sans-serif}
         .io2 {padding-left: 1.5em}
+        .ior {font-style: italic}
         .ip {font-family: sans-serif; font-size: 10pt;}
         .q, .q1, .pi {padding-left: 1.5em; font-size: 10pt;}
         .q2 {padding-left: 2.5em; font-size: 10pt;}
@@ -185,6 +190,7 @@ const startHTMLTemplate = `<!DOCTYPE html>
         .qs {font-style: italic; float: right; padding-left: 1em}
         .sls {font-style: italic}
         .tl {font-style: italic}
+        .tr {font-size: 10pt}
         .wj {color: #600}
         .xt {font-weight: bold}
 
