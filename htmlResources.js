@@ -123,8 +123,8 @@ const pagedJSStyle = `@page {
         div.introduction_sequence {
             columns: 1;
             font-family: sans-serif;
-            page-break-after: recto;
         }
+        hr {page-break-after: recto}
         div.bibleBookBody {
             columns: 2;
             column-gap: 2em;
