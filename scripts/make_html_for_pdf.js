@@ -72,3 +72,4 @@ ts = Date.now();
 
 const config2 = await doRender(pk, config);
 fse.writeFileSync(config2.outputPath, config2.output);
+console.log("PDF written to: "+config2.outputPath+" (file://"+encodeURI(config2.outputPath)+"). View in browser to see rendered HTML with PagedJS.")
