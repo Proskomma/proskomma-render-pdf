@@ -39,6 +39,15 @@ const pdfOutputPath = path.resolve(process.argv[3]);
 if (!pdfOutputPath) {
     throw new Error("USAGE: node make_pdf.js <configPath> <pdfOutputPath>");
 }
+const baseOutputPath = pdfOutputPath.replace(/\.pdf$/, "");
+const prePagedJSHtmlOutputPath = baseOutputPath+"_pre_pagedjs.html";
+const postPagedJSHtmlOutputPath = baseOutputPath+"_post_pagedjs.html";
+
+console.log(pdfOutputPath, baseOutputPath, prePagedJSHtmlOutputPath, postPagedJSHtmlOutputPath)
+
+let prePagedJSHtml = "";
+
+if (! fse.existsSync(prePagedJSHtmlOutputPath)) {
 config.bookOutput = {};
 
 let ts = Date.now();
@@ -74,14 +83,18 @@ console.log(`${nBooks} book(s) and ${nPeriphs} peripheral(s) loaded in ${(Date.n
 ts = Date.now();
 
 const config2 = await doRender(pk, config);
-const prePagedJSHtml = config2.output;
+prePagedJSHtml = config2.output;
 
-const prePagedJSHtmlOutputPath = pdfOutputPath.replace(/\.pdf$/, "")+"_pre_pagedjs.html";
 fse.writeFileSync(prePagedJSHtmlOutputPath, prePagedJSHtml);
-console.log("Pre-PagedJS HTML written to: "+prePagedJSHtmlOutputPath+" (file://"+encodeURI(prePagedJSHtmlOutputPath)+"). View in browser to see rendered HTML with PagedJS.");
+console.log("Pre-PagedJS HTML written to: "+prePagedJSHtmlOutputPath);
+}
+else {
+    prePagedJSHtml = fse.readFileSync(prePagedJSHtmlOutputPath, 'utf8');
+}
 
 const browser = await puppeteer.launch();
 const page = await browser.newPage();
+page.setDefaultTimeout(3000000);
 await page.setContent(prePagedJSHtml);
 page.on('console', msg => {
     for (let i = 0; i < msg.args().length; ++i)
@@ -91,7 +104,7 @@ page.on('console', msg => {
 try {
     console.log("Waiting for Paged.JS to render the TOC...");
     await page.waitForFunction(() => {console.log("Current Page: "+pjCurrentPageNum);return pjRenderingDone;},
-        {timeout: 120000, polling: "mutation"} // Set timeout here. This is 2 minutes. TODO: Add to config file?
+        {timeout: 3000000, polling: "mutation"} // Set timeout here. This is 5 minutes. TODO: Add to config file?
     );
 } catch(e) {
     if (e instanceof puppeteer.errors.TimeoutError) {
@@ -104,11 +117,10 @@ try {
 
 let staticHtml = await page.content();
 
-const staticHtmlOutputPath = pdfOutputPath.replace(/\.pdf$/, "")+"_static.html";
-fse.writeFileSync(staticHtmlOutputPath, staticHtml);
-console.log("Static HTML written to: "+staticHtmlOutputPath+" (file://"+encodeURI(staticHtmlOutputPath)+")");
+fse.writeFileSync(postPagedJSHtmlOutputPath, staticHtml);
+console.log("Static HTML written to: "+postPagedJSHtmlOutputPath);
 
-await page.pdf({path: pdfOutputPath, format: 'A4'})
+await page.pdf({path: pdfOutputPath, format: 'A4', timeout: 300000})
 console.log("PDF written to: "+pdfOutputPath)
 
 await browser.close();
