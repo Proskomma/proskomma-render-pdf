@@ -1,7 +1,7 @@
 import { ScriptureDocSet } from 'proskomma-render';
 import MainDocument from './CanonicalDocument.js';
 import PeripheralDocument from './PeripheralDocument.js';
-import {startHTMLTemplate, endHTMLTemplate, tocHTMLTemplate, titleHTMLTemplate} from './htmlResources.js';
+import {startHTMLTemplate, startPJSCallbackHTMLTemplate, endHTMLTemplate, tocHTMLTemplate, titleHTMLTemplate} from './htmlResources.js';
 
 export default class MainDocSet extends ScriptureDocSet {
 
@@ -72,7 +72,7 @@ const addActions = (dsInstance) => {
                 }
                 return ret.join('\n');
             }
-            let startHTML = startHTMLTemplate;
+            let startHTML = renderer.config.pjsCallbacks? startPJSCallbackHTMLTemplate: startHTMLTemplate;
             startHTML = startHTML.replace(/%titlePage%/g, renderer.config.i18n.titlePage);
             const textDirection = renderer.config.textDirection || 'ltr';
             startHTML = startHTML.replace(/%textDirection%/g, textDirection);

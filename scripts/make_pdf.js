@@ -33,11 +33,19 @@ const configPath = path.resolve(appRoot, process.argv[2]);
 const config = fse.readJsonSync(configPath);
 config.codeRoot = appRoot;
 config.configRoot = path.dirname(configPath);
-config.outputPath = path.resolve(process.argv[3]);
-if (!config.outputPath) {
+
+const pdfOutputPath = path.resolve(process.argv[3]);
+if (!pdfOutputPath) {
     throw new Error("USAGE: node make_pdf.js <configPath> <pdfOutputPath>");
 }
+const baseOutputPath = pdfOutputPath.replace(/\.pdf$/, "");
+const prePagedJSHtmlOutputPath = baseOutputPath+"_pre_pagedjs.html";
+const postPagedJSHtmlOutputPath = baseOutputPath+"_post_pagedjs.html";
+
+let prePagedJSHtml = "";
+
 config.bookOutput = {};
+config.pjsCallbacks = true; // NEEDED FOR PUPPETEER MONITORING
 
 let ts = Date.now();
 let nBooks = 0;
@@ -45,6 +53,7 @@ let nPeriphs = 0;
 
 const pk = new Proskomma();
 const fqSourceDir = path.resolve(config.configRoot, config.sourceDir);
+console.log(`Loading data from '${fqSourceDir}' into Proskomma...`);
 for (const filePath of fse.readdirSync(fqSourceDir)) {
     if (bookMatches(filePath)) {
         console.log(`   ${filePath} (book)`);
@@ -68,39 +77,53 @@ for (const filePath of fse.readdirSync(fqSourceDir)) {
         );
     }
 }
-console.log(`${nBooks} book(s) and ${nPeriphs} peripheral(s) loaded in ${(Date.now() - ts) / 1000} sec`);
-ts = Date.now();
+console.log(`${nBooks} book(s) and ${nPeriphs} peripheral(s) loaded in ${(Date.now() - ts) / 1000} seconds\n`);
 
+console.log("Rendering HTML in Proskomma...")
+ts = Date.now()
 const config2 = await doRender(pk, config);
+prePagedJSHtml = config2.output;
+fse.writeFileSync(prePagedJSHtmlOutputPath, prePagedJSHtml);
+console.log(`Pre-PagedJS HTML rendered in ${(Date.now() - ts) /  1000} seconds and written to {prePagedJSHtmlOutputPath}\n`)
 
-const browser = await puppeteer.launch()
-const page = await browser.newPage()
-await page.setContent(config2.output)
+console.log("Rendering HTML with PagedJS in Puppeteer...")
+ts = Date.now();
+const browser = await puppeteer.launch();
+const page = await browser.newPage();
+await page.setContent(prePagedJSHtml);
+page.on('console', msg => {
+    for (const arg of msg.args()) {
+        console.log(`   ${arg.toString().split(':')[1] || arg.toString()}`);
+    }
+  });
+
 try {
-    console.log("Waiting for Paged.JS to render the TOC...");
-    await page.waitForFunction(() => {
-          const toc_links = document.querySelectorAll('#toc_ul a');
-          if (toc_links.length > 0) {
-              // Check if the last TOC link has its counter #
-              if(window.getComputedStyle(toc_links[toc_links.length-1], ':after').counterReset !== 'none') {
-                  return true;
-              } else {
-                  return false;
-              }
-          }
-          return true; // No TOC?
+    let currentPage = {n: 0};
+    await page.waitForFunction(
+        (currentPage) => {
+            if (pjCurrentPageNum !== currentPage.n) {
+                console.log(`Page ${pjCurrentPageNum}`);
+                currentPage.n = pjCurrentPageNum;
+            }
+            return pjRenderingDone;
         },
-        {timeout: 120000} // Set timeout here. This is 2 minutes. TODO: Add to config file?
+        {timeout: 300000, polling: "mutation"}, // 5 minutes
+        currentPage
     );
 } catch(e) {
     if (e instanceof puppeteer.errors.TimeoutError) {
-        console.error("Paged.JS TOC render timed out!")
+        console.error("   Paged.JS TOC render timed out!")
     } else {
-        console.error("ERROR: ", e);
+        console.error("   ERROR: ", e);
     }
     exit(1);
 }
+let postPagedJSHtml = await page.content();
+fse.writeFileSync(postPagedJSHtmlOutputPath, postPagedJSHtml);
+console.log(`PagedJS HTML rendered in ${(Date.now() - ts) /  1000} seconds and written to ${postPagedJSHtmlOutputPath}\n`)
 
-await page.pdf({path: config2.outputPath, format: 'A4'});
+console.log("Converting PagedJS HTML to PDF...");
+ts = Date.now();
+await page.pdf({path: pdfOutputPath, format: 'A4', timeout: 300000}); // 5 minutes
 await browser.close();
-console.log(`PDF written to: ${config2.outputPath}`);
+console.log(`PDF produced in ${(Date.now() - ts) /  1000} seconds and written to '${pdfOutputPath}'\n`);

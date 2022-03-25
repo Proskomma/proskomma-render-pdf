@@ -198,6 +198,37 @@ const pagedJSStyle = `@page {
         }
         .verses {font-size: 7pt; font-weight: bold}`;
 
+const startPJSCallbackHTMLTemplate = `<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>%titlePage%</title>
+    <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
+    <script>
+        var pjRenderingDone = false;
+        var pjCurrentPage = null;
+        var pjCurrentPageNum = 0;
+        var pjPages = null;
+        class MyPageHandler extends Paged.Handler {
+            afterPageLayout(pageElement, page, breakToken){
+                pjCurrentPage = page;
+                pjCurrentPageNum = page.position + 1;
+            }
+
+            afterRendered(pages) {
+                pjRenderingDone = true;
+                pjPages = pages;
+            }
+        }
+        Paged.registerHandlers(MyPageHandler);
+    </script>
+    <style>
+${pagedJSStyle}
+    </style>
+</head>
+<body>
+<div  dir="%textDirection%">
+`;
 const startHTMLTemplate = `<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -227,4 +258,4 @@ const titleHTMLTemplate = `<div class="titlePage">
 </div>
 `;
 
-export {startHTMLTemplate, endHTMLTemplate, tocHTMLTemplate, titleHTMLTemplate, pagedJSStyle}
+export {startHTMLTemplate, startPJSCallbackHTMLTemplate, endHTMLTemplate, tocHTMLTemplate, titleHTMLTemplate, pagedJSStyle}
