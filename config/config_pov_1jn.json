@@ -1,0 +1,32 @@
+{
+  "title": "Persian Old Version",
+  "language": "pes",
+  "textDirection": "rtl",
+  "uid": "POV",
+  "bookSources": [
+    "1JN"
+  ],
+  "peripheralSources": [],
+  "structure": [
+    [
+      "section",
+      "nt",
+      [
+        [
+          "bookCode",
+          "1JN"
+        ]
+      ]
+    ]
+  ],
+  "i18n": {
+    "notes": "Notes",
+    "tocBooks": "Books of the Bible",
+    "titlePage": "Persian Old Version",
+    "copyright": "Public Domain",
+    "coverAlt": "Cover",
+    "preface": "Preface",
+    "ot": "Old Testament",
+    "nt": "New Testament"
+  }
+}
