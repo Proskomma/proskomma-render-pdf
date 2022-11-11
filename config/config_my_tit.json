@@ -1,10 +1,11 @@
 {
-  "title": "Persian Old Version",
-  "language": "pes",
-  "textDirection": "rtl",
-  "uid": "POV",
+  "sourceDir": "../test/test_data/myt",
+  "title": "MY Test",
+  "language": "my",
+  "textDirection": "ltr",
+  "uid": "myt",
   "bookSources": [
-    "1JN"
+    "TIT"
   ],
   "peripheralSources": [],
   "structure": [
@@ -14,7 +15,7 @@
       [
         [
           "bookCode",
-          "1JN"
+          "TIT"
         ]
       ]
     ]
@@ -22,7 +23,7 @@
   "i18n": {
     "notes": "Notes",
     "tocBooks": "Books of the Bible",
-    "titlePage": "Persian Old Version",
+    "titlePage": "MY Test for the good folks at UnfoldingWord",
     "copyright": "Public Domain",
     "coverAlt": "Cover",
     "preface": "Preface",
